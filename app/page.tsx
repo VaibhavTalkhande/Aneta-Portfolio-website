@@ -1,14 +1,26 @@
 "use client";
 import * as React from "react";
-import { motion } from "framer-motion";
-import { FiArrowRight, FiDownload, FiMail, FiPhone, FiInstagram, FiLinkedin, FiFacebook, FiTwitter } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiArrowRight,
+  FiDownload,
+  FiMail,
+  FiPhone,
+  FiInstagram,
+  FiLinkedin,
+  FiFacebook,
+  FiTwitter,
+  FiMenu,
+  FiX,
+} from "react-icons/fi";
 import bg from "@/public/bg.jpg";
 import nlp from "@/public/nlp.jpg";
 import coaching from "@/public/coaching.jpg";
 import personality from "@/public/personality.avif";
 import empowerment from "@/public/empowerment.jpg";
 import resources from "@/public/resources.jpg";
-import Image from "next/image";
+import profile from "@/public/profile.jpg";
+
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.12 } },
@@ -19,13 +31,23 @@ const item = {
   show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 80, damping: 14 } },
 };
 
-export default function AnetaPortfolio(){
-  // OLD SITE CONTACT (update when you have the exact URLs)
+export default function AnetaPortfolio() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
   const socials = [
-    { name: "LinkedIn", href: "https://www.linkedin.com/", icon: FiLinkedin },
-    { name: "Instagram", href: "https://www.instagram.com/", icon: FiInstagram },
-    { name: "Facebook", href: "https://www.facebook.com/100063698374820/", icon: FiFacebook },
-    { name: "Twitter", href: "https://x.com/", icon: FiTwitter },
+    { name: "LinkedIn", href: "https://www.linkedin.com/in/aneta-sanders-ma-fcipd-mnlp-master-mind-shifter-203a1a9/", icon: FiLinkedin },
+    { name: "Instagram", href: "https://www.instagram.com/aneta_theempowermentcoach/", icon: FiInstagram },
+    { name: "Facebook", href: "https://www.facebook.com/aneta.sanders.9/", icon: FiFacebook },
+    { name: "Twitter", href: "https://x.com/Vilya1979", icon: FiTwitter },
+  ];
+
+  const navLinks = [
+    { href: "#about", label: "About" },
+    { href: "#journey", label: "Your Journey" },
+    { href: "#approach", label: "Approach" },
+    { href: "#testimonials", label: "Testimonials" },
+    { href: "#resources", label: "Free Guide" },
+    { href: "#contact", label: "Contact" },
   ];
 
   return (
@@ -33,22 +55,65 @@ export default function AnetaPortfolio(){
       {/* NAVBAR */}
       <header className="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-neutral-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="#hero" className="font-semibold tracking-tight text-lg">Flying High Coaching</a>
-          <nav className="flex items-center gap-6 text-sm">
-            <a href="#about" className="hover:text-neutral-600">About</a>
-            <a href="#journey" className="hover:text-neutral-600">Your Journey</a>
-            <a href="#approach" className="hover:text-neutral-600">Approach</a>
-            <a href="#testimonials" className="hover:text-neutral-600">Testimonials</a>
-            <a href="#resources" className="hover:text-neutral-600">Free Guide</a>
-            <a href="#contact" className="hover:text-neutral-600">Contact</a>
+          <a href="#hero" className="font-bold tracking-tight text-2xl">
+            Aneta Sanders
+          </a>
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="hover:text-neutral-600 transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
             <a
-              href="https://calendly.com/your-calendly-username/free-consultation"
+              href="https://calendly.com/anetasandersflyinghighcoaching"
               className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-4 py-2 text-white hover:bg-neutral-800"
             >
               Book Free Consultation <FiArrowRight />
             </a>
           </nav>
+          {/* Mobile Nav Toggle */}
+          <button
+            className="md:hidden p-2 rounded-lg border border-neutral-300 hover:bg-neutral-100"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
         </div>
+        {/* Mobile Nav Menu */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.nav
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="md:hidden bg-white shadow-lg border-t border-neutral-200 px-4 py-6 space-y-4"
+            >
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block text-lg text-neutral-800 hover:text-neutral-600 transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="https://calendly.com/anetasandersflyinghighcoaching"
+                className="mt-4 inline-flex w-full justify-center items-center gap-2 rounded-xl bg-neutral-900 px-4 py-3 text-white hover:bg-neutral-800"
+                onClick={() => setMobileOpen(false)}
+              >
+                Book Free Consultation <FiArrowRight />
+              </a>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* HERO */}
@@ -60,21 +125,39 @@ export default function AnetaPortfolio(){
         />
         <div className="absolute inset-0 -z-10 bg-black/50" />
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-28 sm:py-36 text-white">
-          <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
-            <motion.h1 variants={item} className="text-4xl sm:text-6xl font-extrabold leading-tight">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="space-y-6"
+          >
+            <motion.h1
+              variants={item}
+              className="text-4xl sm:text-6xl font-extrabold leading-tight"
+            >
               Break Free. Rise Higher. Reclaim Your True Self.
             </motion.h1>
-            <motion.p variants={item} className="text-lg sm:text-2xl max-w-3xl">
-              Trauma-informed empowerment coaching for women and LGBTQ+ professionals ready to heal, grow, and thrive.
+            <motion.p
+              variants={item}
+              className="text-lg sm:text-2xl max-w-3xl"
+            >
+              Trauma-informed empowerment coaching for women and LGBTQ+
+              professionals ready to heal, grow, and thrive.
             </motion.p>
-            <motion.div variants={item} className="flex flex-wrap items-center gap-4">
+            <motion.div
+              variants={item}
+              className="flex flex-wrap items-center gap-4"
+            >
               <a
-                href="https://calendly.com/your-calendly-username/free-consultation"
+                href="https://calendly.com/anetasandersflyinghighcoaching"
                 className="inline-flex items-center gap-2 rounded-xl bg-white/95 px-5 py-3 text-neutral-900 hover:bg-white"
               >
                 Book Your Free Consultation <FiArrowRight />
               </a>
-              <a href="#resources" className="inline-flex items-center gap-2 rounded-xl border border-white/70 px-5 py-3 hover:bg-white/10">
+              <a
+                href="#resources"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/70 px-5 py-3 hover:bg-white/10"
+              >
                 Download Free Guide <FiDownload />
               </a>
             </motion.div>
@@ -103,7 +186,7 @@ export default function AnetaPortfolio(){
           <div className="order-1 md:order-2">
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/10">
               <img
-                src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop"
+                src={profile.src}
                 alt="Coach portrait"
                 className="h-full w-full object-cover"
               />
@@ -233,7 +316,7 @@ export default function AnetaPortfolio(){
               <p className="mt-4 text-neutral-700">You don’t have to do this alone. If you’re ready to rise above your past and step into your true power, let’s talk.</p>
               <div className="mt-6 flex flex-wrap gap-4 justify-center">
                 <a
-                  href="https://calendly.com/your-calendly-username/free-consultation"
+                  href="https://calendly.com/anetasandersflyinghighcoaching"
                   className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 px-5 py-3 text-white hover:bg-neutral-800"
                 >
                   Book Your Free Consultation <FiArrowRight />
@@ -250,24 +333,64 @@ export default function AnetaPortfolio(){
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-neutral-200 bg-neutral-50 py-12">
+      <footer className="border-t border-neutral-200 bg-neutral-50 py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-sm text-neutral-600">© {new Date().getFullYear()} Flying High Coaching Ltd. All rights reserved.</p>
-            <ul className="flex items-center gap-4">
-              {socials.map((s) => (
-                <li key={s.name}>
-                  <a href={s.href} className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm hover:bg-white">
-                    {React.createElement(s.icon, { className: "h-4 w-4" })}
-                    <span className="hidden sm:inline">{s.name}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-xs sm:text-sm text-neutral-600 text-center md:text-left">
+          © {new Date().getFullYear()} Aneta Sanders. All rights reserved.
+        </p>
+        <ul className="flex items-center gap-2 sm:gap-4">
+          {socials.map((s) => (
+            <li key={s.name}>
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-2 sm:px-3 py-2 text-xs sm:text-sm hover:bg-white transition-colors"
+          >
+            {React.createElement(s.icon, { className: "h-4 w-4" })}
+            <span className="hidden sm:inline">{s.name}</span>
+          </a>
+            </li>
+          ))}
+        </ul>
           </div>
-          <p className="mt-4 text-xs text-neutral-500">Registered in England & Wales. Company No. 11956784.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2 sm:gap-4 text-xs text-neutral-500">
+        {navLinks.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="hover:underline px-2 py-1 transition-colors hover:text-neutral-700"
+          >
+            {link.label}
+          </a>
+        ))}
+          </div>
+          <div className="mt-6 text-center text-xs text-neutral-500 space-y-1">
+        <p>
+          Email:{" "}
+          <a
+            href="mailto:aneta@flyinghighcoaching.co.uk"
+            className="hover:underline hover:text-neutral-700"
+          >
+            aneta@flyinghighcoaching.co.uk
+          </a>
+        </p>
+        <p>
+          Phone:{" "}
+          <a
+            href="tel:+447737487973"
+            className="hover:underline hover:text-neutral-700"
+          >
+            +44 7737 487 973
+          </a>
+        </p>
+        <p>Registered in England & Wales. Company No. 11956784.</p>
+          </div>
         </div>
       </footer>
     </main>
   );
 }
+
+
